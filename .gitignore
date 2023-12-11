@@ -14,6 +14,11 @@ frontend/build
 
 #### backend
 .terraform
+.tfstate
+backend/terraform/*.zip
+backend/env/*
+!backend/env/.gitkeep
+backend/lambda/**/*.whl
 
 # misc
 **/.DS_Store

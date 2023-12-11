@@ -13,7 +13,12 @@ docker run --rm --net=localstack_default -it -v $PWD/terraform:/app tflocal:0.16
 
 alias登録すると使いやすい
 ```sh
-alias tflocal="docker run --rm --net=localstack_default -it -v $PWD/terraform:/app tflocal:0.16.0"
+alias tflocal="docker run -v $PWD/terraform:/app --rm --net=localstack_default -u `id -u`:`id -g` -it tflocal:0.16.0"
+```
+
+外部ファイルを利用する場合はコンテナへボリュームをアタッチすること。
+```sh
+alias tflocal="docker run -v $PWD/terraform:/app -v $PWD/lambda:/app/lambda --rm --net=localstack_default -u `id -u`:`id -g` -it tflocal:0.16.0"
 ```
 
 参考:  
