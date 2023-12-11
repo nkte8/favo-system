@@ -13,7 +13,7 @@ docker compose version
 
 Localstackの起動  
 ```sh
-docker compose -f ./localstack/docker-compose.yml up -d
+docker compose -f ./localstack/docker-compose.yml up
 ```
 
 参考:  
