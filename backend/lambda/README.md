@@ -1,9 +1,15 @@
 
 ## lambda用pythonコンテナ
 
-実行方法
+~~実行方法~~
 ```sh
 docker run --rm -it -v $PWD/lambda:/src -w /src --entrypoint /bin/bash public.ecr.aws/lambda/python:3.11
+```
+
+仮想マシン側にモジュールを直接インストールしたため不要。  
+```sh
+sudo apt install python3-pip
+pip3 install boto3
 ```
 
 layersのインストール方法
