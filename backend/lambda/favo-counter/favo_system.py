@@ -1,6 +1,17 @@
 import boto3
+from typing import TypedDict, NotRequired
 
-class favo_system:
+
+# data structure of dynamodb
+# {
+#     key: { page_name }
+#     value: { favo_count }
+# }
+class fav_api:
+
+    db_key_name = "Identify"
+    db_data_name = "FavoriteCount"
+
     def __init__(self, favo_table, user_table = None, endpoint_url = None) -> None:
         self.client = boto3.resource('dynamodb', endpoint_url=endpoint_url)
         self.favo_table = self.client.Table(favo_table)
@@ -9,65 +20,90 @@ class favo_system:
         else:
             self.user_table = None
 
-    def favo_user_push(self, user_name):
-        return self.table_favocount_push(
+    def page_fav_read(self, request_key):
+        result = {}
+        value = self.__fav_read(
             table=self.favo_table,
-            key="user_name",
-            value=user_name
+            key=self.db_key_name,
+            key_value=request_key,
+            request_data_key=self.db_data_name
         )
-    def favo_user_read(self, user_name):
-        return self.table_favocount_read(
-            table=self.favo_table,
-            key="user_name",
-            value=user_name
-        )
+        match value:
+            case _ if value >= 0:
+                result = {
+                    'statusCode': 200,
+                    self.db_data_name: value
+                }
+            case _ if value < 0:
+                result = {
+                    'statusCode': value * -1,
+                    self.db_data_name: None
+                }
+  
+        return result
 
-    def favo_page_push(self, page_name):
-        return self.table_favocount_push(
-            table=self.favo_table,
-            key="page_url",
-            value=page_name
-        )
-
-    def favo_page_read(self, page_name):
-        return self.table_favocount_read(
-            table=self.favo_table,
-            key="page_url",
-            value=page_name
-        )
-        
-    def table_favocount_push(self, table, key, value):
-        current_count = self.table_favocount_read(
-                            table=table,
-                            key=key,
-                            value=value)
-        if current_count == None:
-            return None
-        current_count +=1
-        new_item = {
-            key: value,
-            "favo_count": current_count
-        }
-        try:
-            table.put_item(Item=new_item)
-        except Exception as e:
-            print('E: Unexpected error')
-            print(e)
-            return False
-        return True
-
-    def table_favocount_read(self, table, key, value):
+    def __fav_read(self, table, key, key_value, request_data_key):
         try:
             exist_data = table.get_item(
                 Key={
-                    key: value
+                    key: key_value
                 }
             )
-            return exist_data['Item']['favo_count']
+            return exist_data['Item'][request_data_key]
         except KeyError:
-            print('I: No data found in ' + value)
+            # return -404
             return 0
         except Exception as e:
             print('E: Unexpected error')
-            print(e)
-            return None
+            # print(e)
+            return -500
+
+    def page_fav_add(self, request_key):
+        result = {}
+        value = self.__fav_read(
+            table=self.favo_table,
+            key=self.db_key_name,
+            key_value=request_key,
+            request_data_key=self.db_data_name
+        )
+        if value < 0:
+            return {
+                'statusCode': value * -1,
+                self.db_data_name: None
+            }
+
+        value += 1
+        result = self.table_favocount_push(
+            table=self.favo_table,
+            key=self.db_key_name,
+            key_value=request_key, 
+            request_data_key=self.db_data_name,
+            request_data_value=value
+        )
+        match result:
+            case True:
+                result = {
+                    'statusCode': 200,
+                    self.db_data_name: value
+                }
+            case defalut:
+                result = {
+                    'statusCode': value * -1,
+                    self.db_data_name: None
+                }
+        return result
+    
+    def table_favocount_push(self, table, key, key_value, 
+                             request_data_key, request_data_value):
+        result = False
+        update_item = {
+            key: key_value,
+            request_data_key: request_data_value
+        }
+        try:
+            table.put_item(Item=update_item)
+            result = True
+        except Exception as e:
+            print('E: Unexpected error')
+            # print(e)
+        return result
