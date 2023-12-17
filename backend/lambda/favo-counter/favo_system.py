@@ -1,6 +1,4 @@
 import boto3
-from typing import TypedDict, NotRequired
-
 
 # data structure of dynamodb
 # {
@@ -51,8 +49,8 @@ class fav_api:
             )
             return exist_data['Item'][request_data_key]
         except KeyError:
-            # return -404
-            return 0
+            return -404
+            # return 0
         except Exception as e:
             print('E: Unexpected error')
             # print(e)
@@ -73,24 +71,20 @@ class fav_api:
             }
 
         value += 1
-        result = self.table_favocount_push(
+        r_val = self.table_favocount_push(
             table=self.favo_table,
             key=self.db_key_name,
             key_value=request_key, 
             request_data_key=self.db_data_name,
             request_data_value=value
         )
-        match result:
-            case True:
-                result = {
-                    'statusCode': 200,
-                    self.db_data_name: value
-                }
-            case defalut:
-                result = {
-                    'statusCode': value * -1,
-                    self.db_data_name: None
-                }
+        if r_val < 0:
+            value -=1
+        
+        result = {
+            'statusCode': abs(r_val),
+            self.db_data_name: value
+        }
         return result
     
     def table_favocount_push(self, table, key, key_value, 
@@ -102,8 +96,32 @@ class fav_api:
         }
         try:
             table.put_item(Item=update_item)
-            result = True
+            result = 200
         except Exception as e:
+            result = -500
             print('E: Unexpected error')
             # print(e)
+        return result
+
+    def page_fav_register(self, request_key):
+        result = {}
+        value = 0
+        r_val = self.table_favocount_push(
+            table=self.favo_table,
+            key=self.db_key_name,
+            key_value=request_key, 
+            request_data_key=self.db_data_name,
+            request_data_value=value
+        )
+        match r_val:
+            case 200:
+                result = {
+                    'statusCode': 200,
+                    self.db_data_name: value
+                }
+            case defalut:
+                result = {
+                    'statusCode': r_val * -1,
+                    self.db_data_name: None
+                }
         return result
