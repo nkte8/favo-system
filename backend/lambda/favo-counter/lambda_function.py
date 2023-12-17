@@ -5,7 +5,9 @@ favo_table = "favodb"
 user_table = "userdb"
 
 urlquery_identify = "name"
-# local_endpoint_url = "http://localhost:4566"
+postrequest_register = 'register'
+postrequest_slug = 'add'
+# local_url = "http://localhost:4566"
 
 def err(s_code):
     msg = ""
@@ -14,32 +16,40 @@ def err(s_code):
             msg = "Internal Server Error."
         case 400:
             msg = "Bad Request."
+        case 404:
+            msg = "Not Found."
     return {
         'statusCode': s_code,
-        'body': msg
+        'body': json.dumps(msg)
     }
 
 def handler(event, context):
     result = {}
-    method = event['requestContext']['http']['method']  
-    if method != "POST" and method != "GET":
-        return err(500)
+    if (event.get('requestContext', {}).get('http', {}).get('method') is not None):
+        method = event['requestContext']['http']['method']
 
-    identify = event['queryStringParameters'].get(urlquery_identify)
+        if method != "POST" and method != "GET":
+            return err(500)
 
-    if identify == None:
-        return err(400)
-
-    # page_url = json.loads(identify)
-    api = fav_api(
-        favo_table)
-
+    api = fav_api(favo_table)
+    
     match method:
         case "GET":
+            identify = event['queryStringParameters'].get(urlquery_identify)
             result = api.page_fav_read(identify)
+            
         case "POST":
-            result = api.page_fav_add(identify)
+            body = json.loads(event.get('body',None))
+            register = body.get(postrequest_register,None)
+            slug = body.get(postrequest_slug,None)
 
+            if register != None:
+                result = api.page_fav_register(register)
+            elif slug != None:
+                result = api.page_fav_add(slug)
+            else:
+                return err(500)
+            
     return result
 
 if __name__ == "__main__":
