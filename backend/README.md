@@ -24,7 +24,8 @@ docker compose -f ./localstack/docker-compose.yml up
 
 tflocal実行
 ```sh
-alias tflocal="docker run -v $PWD/terraform:/app -v $PWD/lambda:/app/lambda --rm --net=localstack_default -u `id -u`:`id -g` -it tflocal:0.16.0"
+alias tflocal="docker run -v \${PWD}/terraform:/app -v \${PWD}/lambda:/app/lambda --rm --net=localstack_default -u \$(id -u):\$(id -g) -it tflocal:0.16.0" 
+alias tflocal >> $HOME/.bashrc
 tflocal init
 ```
 
@@ -34,7 +35,8 @@ tflocal init
 
 - initの実施
 ```sh
-alias terraform="docker run --rm -v $PWD/env:/env -v $PWD/terraform:/app -v $PWD/lambda:/app/lambda -w /app -u `id -u`:`id -g` -it hashicorp/terraform:1.6.5"
+alias terraform="docker run --rm -v \${PWD}/env:/env -v \${PWD}/terraform:/app -v \${PWD}/lambda:/app/lambda -w /app -u \$(id -u):\$(id -g) -it hashicorp/terraform:1.6.5"
+alias terraform >> $HOME/.bashrc
 terraform init
 ```
 
