@@ -45,7 +45,7 @@ resource "aws_lambda_function_url" "lambda_favo_system_function_url" {
 
   cors {
     allow_credentials  = true
-    allow_origins      = ["https://unnamedworks.com/"]
+    allow_origins      = ["https://unnamedworks.com/","https://app.newt.so"]
     allow_methods      = ["POST","GET"]
     allow_headers      = ["date", "keep-alive"]
     expose_headers     = ["keep-alive", "date"]
