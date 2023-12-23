@@ -49,7 +49,8 @@ class fav_api:
             )
             return exist_data['Item'][request_data_key]
         except KeyError:
-            return -404
+            print('I: Not found')
+            return 0
             # return 0
         except Exception as e:
             print('E: Unexpected error')

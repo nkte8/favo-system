@@ -39,13 +39,13 @@ def handler(event, context):
             
         case "POST":
             body = json.loads(event.get('body',None))
-            register = body.get('register',None)
+            # register = body.get('register',None)
             read = body.get('read',None)
             slug = body.get('add',None)
 
-            if register != None:
-                result = api.page_fav_register(register)
-            elif slug != None:
+            # if register != None:
+            #     result = api.page_fav_register(register)
+            if slug != None:
                 result = api.page_fav_add(slug)
             elif read != None:
                 result = api.page_fav_read(read)
