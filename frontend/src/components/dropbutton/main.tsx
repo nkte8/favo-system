@@ -4,11 +4,10 @@ import './main.css';
 
 interface Props {
     api_url: string;
-    page_name: string;
-    user_name: string | null;
+    user_name: string;
 }
 
-export default function Favobutton({ api_url, page_name, user_name }: Props) {
+export default function Dropbutton({ api_url, user_name }: Props) {
     const [count, setCount] = useState(0);
     const [active, setActive] = useState(false);
     const get_result = async () => fetch(api_url, {
@@ -16,7 +15,6 @@ export default function Favobutton({ api_url, page_name, user_name }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(
             {
-                id: page_name,
                 user: user_name,
                 arg: "read",
             }
@@ -33,12 +31,10 @@ export default function Favobutton({ api_url, page_name, user_name }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(
             {
-                id: page_name,
                 user: user_name,
-                arg: "push",
+                arg: "pop",
             }
         )
-
     }
     ).then((response) => response.json()
     ).then((data) => { setCount(data.FavoriteCount) }
@@ -59,8 +55,10 @@ export default function Favobutton({ api_url, page_name, user_name }: Props) {
 
     return (
         <button className={`likeButton ${active ? "clicked" : ""}`} onClick={handleClick}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 15">
-                <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z" />
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
             </svg>
             &nbsp;
             {count}
