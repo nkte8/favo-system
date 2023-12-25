@@ -29,6 +29,10 @@ resource "aws_lambda_function" "lambda_favo_counter_function" {
   source_code_hash = data.archive_file.lambda_favo_counter_payload.output_base64sha256
 
   runtime = "python3.11"
+
+  layers = [
+    aws_lambda_layer_version.lambda_layer.arn
+    ]
 }
 
 data "archive_file" "lambda_layer_archive" {
@@ -50,10 +54,10 @@ resource "aws_lambda_function_url" "lambda_favo_counter_function_url" {
 
   cors {
     allow_credentials  = true
-    allow_origins      = ["https://unnamedworks.com/"]
-    allow_methods      = ["POST","GET"]
-    allow_headers      = ["date", "keep-alive"]
-    expose_headers     = ["keep-alive", "date"]
+    allow_origins      = ["https://unnamedworks.com"]
+    allow_methods      = ["POST"]
+    allow_headers      = ["content-type"]
+    expose_headers     = []
     max_age            = 86400
   }
   depends_on = [
@@ -64,3 +68,8 @@ resource "aws_lambda_function_url" "lambda_favo_counter_function_url" {
 output "lambda_favo_counter_function_url" {
   value = aws_lambda_function_url.lambda_favo_counter_function_url.function_url
 }
+
+# resource "aws_cloudwatch_log_group" "cloudwatch_log_group_favo_counter" {
+#   name = "/aws/lambda/${var.lambda_favo_counter_name}"
+#   retention_in_days = 7
+# }

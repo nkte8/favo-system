@@ -14,6 +14,14 @@ class favo_api:
         self.client = boto3.resource('dynamodb', endpoint_url=endpoint_url)
         self.favo_table = self.client.Table(favo_table)
 
+    def r_json(self, s_code, favo_value):
+        return {
+            'statusCode': s_code,
+            'body': {
+                self.db_data_name: favo_value,
+                },
+        }
+
     def page_fav_read(self, request_key):
         result = {}
         value = self.__table_read(
@@ -24,16 +32,9 @@ class favo_api:
         )
         match value:
             case _ if value >= 0:
-                result = {
-                    'statusCode': 200,
-                    self.db_data_name: value
-                }
+                result = self.r_json(200,value)
             case _ if value < 0:
-                result = {
-                    'statusCode': value * -1,
-                    self.db_data_name: None
-                }
-  
+                result = self.r_json(abs(value), None)
         return result
 
     def __table_read(self, table, key, key_value, request_data_key):
@@ -61,10 +62,7 @@ class favo_api:
             request_data_key=self.db_data_name
         )
         if value < 0:
-            return {
-                'statusCode': value * -1,
-                self.db_data_name: None
-            }
+            return self.r_json(abs(value), None)
 
         value += 1
         r_val = self.__table_push(
@@ -77,11 +75,7 @@ class favo_api:
         if r_val < 0:
             value -=1
 
-        result = {
-            'statusCode': abs(r_val),
-            self.db_data_name: value
-        }
-        return result
+        return self.r_json(abs(r_val),value)
 
     def __table_push(self, table, key, key_value, 
                              request_data_key, request_data_value):
@@ -108,15 +102,9 @@ class favo_api:
             request_data_key=self.db_data_name
         )
         if value < 0:
-            return {
-                'statusCode': value * -1,
-                self.db_data_name: None
-            }
+            return self.r_json(abs(r_val),None)
         if value - pop_count < 0:
-            return {
-                'statusCode': 204,
-                self.db_data_name: value
-            }
+            return self.r_json(204,value)
 
         value -= pop_count
         r_val = self.__table_push(
@@ -127,10 +115,6 @@ class favo_api:
             request_data_value=value
         )
         if r_val < 0:
-            value -=1
+            value +=pop_count
 
-        result = {
-            'statusCode': abs(r_val),
-            self.db_data_name: value
-        }
-        return result
+        return self.r_json(abs(r_val),value)
