@@ -10,16 +10,29 @@ class favo_api:
     db_key_name = "Identify"
     db_data_name = "FavoriteCount"
 
+    rcode_data_name = "favcount"
+    rcode_msg_name = "info"
+    # cors_domains = 'https://unnamedworks.com'
+
+    msg_cannot_pop = "クレジットが不足しています。"
+
     def __init__(self, favo_table,  endpoint_url = None) -> None:
         self.client = boto3.resource('dynamodb', endpoint_url=endpoint_url)
         self.favo_table = self.client.Table(favo_table)
 
-    def r_json(self, s_code, favo_value):
+    def r_json(self, s_code, favo_value, msg = None):
         return {
             'statusCode': s_code,
             'body': {
-                self.db_data_name: favo_value,
-                },
+                self.rcode_data_name: favo_value,
+                self.rcode_msg_name: msg,
+            },
+            'isBase64Encoded': False,
+            # 'headers': {
+            #     'Access-Control-Allow-Headers': 'Content-Type',
+            #     'Access-Control-Allow-Origin': self.cors_domain,
+            #     'Access-Control-Allow-Methods': 'GET'
+            # },
         }
 
     def page_fav_read(self, request_key):
@@ -104,7 +117,7 @@ class favo_api:
         if value < 0:
             return self.r_json(abs(r_val),None)
         if value - pop_count < 0:
-            return self.r_json(204,value)
+            return self.r_json(204,value,self.msg_cannot_pop)
 
         value -= pop_count
         r_val = self.__table_push(

@@ -4,6 +4,9 @@ from api import favo_api
 favo_table = "favodb"
 user_table = "userdb"
 
+page_api = favo_api(favo_table)
+user_api = favo_api(user_table)
+
 def handler(event, context):
     result = {
         'statusCode': 404
@@ -14,15 +17,11 @@ def handler(event, context):
         if method != "POST":
             raise Exception("Invalid method")
 
-    page_api = favo_api(favo_table)
-    user_api = favo_api(user_table)
-
     body = json.loads(event.get('body',None))
 
     arg = body.get('arg',None)
     user_id = body.get('user',None)
     page_id = body.get('id',None)
-
 
     if user_id != None:
         match arg:
