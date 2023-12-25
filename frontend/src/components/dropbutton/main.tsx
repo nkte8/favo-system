@@ -21,7 +21,7 @@ export default function Dropbutton({ api_url, user_name }: Props) {
         )
     }
     ).then((response) => response.json()
-    ).then((data) => { setCount(data.FavoriteCount) }
+    ).then((data) => { setCount(data.favcount) }
     ).catch(() => {
         console.log("error");
     })
@@ -37,7 +37,12 @@ export default function Dropbutton({ api_url, user_name }: Props) {
         )
     }
     ).then((response) => response.json()
-    ).then((data) => { setCount(data.FavoriteCount) }
+    ).then((data) => { 
+        setCount(data.favcount);
+        if(data.info != null){
+            console.log(data.info);
+        }
+    }
     ).catch(() => {
         console.log("error");
     })

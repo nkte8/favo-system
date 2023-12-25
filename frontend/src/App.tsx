@@ -4,7 +4,7 @@ import './App.css';
 import Favobutton from './components/favobutton/main'
 import Dropbutton from './components/dropbutton/main'
 
-const api_url = "https://npl6thl3fdt4wvxhbt42zgh7ny0ltmhn.lambda-url.ap-northeast-1.on.aws/"
+const api_url = "http://ncyb0r1e2jecpeu8t3t9dkfzrr2xl3cy.lambda-url.us-east-1.localhost.localstack.cloud:4566/"
 const page_name = "hoge"
 const user_name = "huga"
 function App() {

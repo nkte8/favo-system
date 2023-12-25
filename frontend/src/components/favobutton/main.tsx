@@ -23,7 +23,7 @@ export default function Favobutton({ api_url, page_name, user_name }: Props) {
         )
     }
     ).then((response) => response.json()
-    ).then((data) => { setCount(data.FavoriteCount) }
+    ).then((data) => { setCount(data.favcount) }
     ).catch(() => {
         console.log("error");
     })
@@ -41,7 +41,7 @@ export default function Favobutton({ api_url, page_name, user_name }: Props) {
 
     }
     ).then((response) => response.json()
-    ).then((data) => { setCount(data.FavoriteCount) }
+    ).then((data) => { setCount(data.favcount) }
     ).catch(() => {
         console.log("error");
     })
