@@ -4,8 +4,8 @@ from api import favo_api
 favo_table = "favodb"
 user_table = "userdb"
 
-page_api = favo_api(favo_table)
-user_api = favo_api(user_table)
+page_api = favo_api(favo_table, rcode_data_name="favcount")
+user_api = favo_api(user_table, rcode_data_name="favcount")
 
 def handler(event, context):
     result = {
@@ -30,7 +30,8 @@ def handler(event, context):
             case "push":
                 result = user_api.page_fav_push(user_id)
             case "pop":
-                result = user_api.page_fav_pop(user_id)
+                pass
+                # result = user_api.page_fav_pop(user_id)
             case default:
                 raise Exception("Invalid order")
 
@@ -46,3 +47,16 @@ def handler(event, context):
                 raise Exception("Invalid order")
 
     return result
+
+if __name__ == "__main__":
+    handler({
+        "requestContext": {
+            "http":{
+                "method": "POST"
+            }
+        },
+        "body": json.dumps({
+            "arg": "read",
+            "id": "hoge",
+        })
+    }, None)
