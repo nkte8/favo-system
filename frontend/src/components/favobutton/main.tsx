@@ -2,13 +2,25 @@ import React, { useState, useEffect } from 'react';
 
 import './main.css';
 
+const key_name_user_name = "user_name"
+
 interface Props {
     api_url: string;
     page_name: string;
-    user_name: string | null;
+    // user_name: string | null;
 }
 
-export default function Favobutton({ api_url, page_name, user_name }: Props) {
+export default function Favobutton({ api_url, page_name }: Props) {
+
+    // user情報をlocalstorageから取得
+    var user_name: string | null = null
+    if (typeof localStorage !== "undefined"){
+        const value = localStorage.getItem(key_name_user_name);
+        if (value !== null) {
+            user_name = value
+        }
+    }
+
     const [count, setCount] = useState(0);
     const [active, setActive] = useState(false);
     const get_result = async () => fetch(api_url, {
