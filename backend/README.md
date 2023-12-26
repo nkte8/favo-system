@@ -26,7 +26,7 @@ tflocal実行
 ```sh
 alias tflocal="docker run -v \${PWD}/terraform:/app -v \${PWD}/lambda:/app/lambda --rm --net=localstack_default -u \$(id -u):\$(id -g) -it tflocal:0.16.0" 
 alias tflocal >> $HOME/.bashrc
-tflocal init
+tflocal init -reconfigure
 ```
 
 ## terraform(prod)の実行方法
@@ -37,7 +37,7 @@ tflocal init
 ```sh
 alias terraform="docker run --rm -v \${PWD}/env:/env -v \${PWD}/terraform:/app -v \${PWD}/lambda:/app/lambda -w /app -u \$(id -u):\$(id -g) -it hashicorp/terraform:1.6.5"
 alias terraform >> $HOME/.bashrc
-terraform init
+terraform init -reconfigure -backend-config=/env/env.tfbackend
 ```
 
 `-var-file`を用いて本番環境向けの設定の読み込みを行う

@@ -23,7 +23,7 @@ resource "aws_dynamodb_table" "favo_dynamodb" {
   }
   
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 }
 
@@ -44,6 +44,6 @@ resource "aws_dynamodb_table" "user_dynamodb" {
   }
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 }
