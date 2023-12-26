@@ -2,12 +2,23 @@ import React, { useState, useEffect } from 'react';
 
 import './main.css';
 
+const key_name_user_name = "user_name"
+
 interface Props {
     api_url: string;
-    user_name: string;
 }
 
-export default function Dropbutton({ api_url, user_name }: Props) {
+export default function Dropbutton({ api_url }: Props) {
+
+    // user情報をlocalstorageから取得
+    var user_name: string | null = null
+    if (typeof localStorage !== "undefined"){
+        const value = localStorage.getItem(key_name_user_name);
+        if (value !== null) {
+            user_name = value
+        }
+    }
+
     const [count, setCount] = useState(0);
     const [active, setActive] = useState(false);
     const get_result = async () => fetch(api_url, {
