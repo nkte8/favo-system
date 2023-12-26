@@ -5,6 +5,8 @@ variable "lambda_favo_counter_payload_src" {}
 variable "lambda_favo_counter_name" {}
 variable "lambda_favo_counter_handler" {}
 
+variable "lambda_favo_counter_function_url_cors_origin" {}
+
 # variable "lambda_ufav_counter_payload_name" {}
 # variable "lambda_ufav_counter_payload_src" {}
 # variable "lambda_ufav_counter_name" {}
@@ -54,7 +56,7 @@ resource "aws_lambda_function_url" "lambda_favo_counter_function_url" {
 
   cors {
     allow_credentials  = true
-    allow_origins      = ["https://unnamedworks.com"]
+    allow_origins      = var.lambda_favo_counter_function_url_cors_origin
     allow_methods      = ["POST"]
     allow_headers      = ["content-type"]
     expose_headers     = []
