@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 
 import './main.css';
 
-const key_name_user_name = "user_name"
-
-export default function Favobutton() {
+interface Props {
+    localstorage_id_key: string
+}
+export default function Favobutton({localstorage_id_key}:Props) {
     
     // 初期値の設定
     var load_user_name = ""
     if (typeof localStorage !== "undefined"){
-        const value = localStorage.getItem(key_name_user_name);
+        const value = localStorage.getItem(localstorage_id_key);
         if (value !== null) {
             load_user_name = value
         }
@@ -21,7 +22,7 @@ export default function Favobutton() {
         if (active_text.length < 3 || active_text.length > 20) {
             window.alert("名前は3文字以上、20文字以下で指定してください。");
         } else {
-            localStorage.setItem(key_name_user_name, active_text);
+            localStorage.setItem(localstorage_id_key, active_text);
         }
     }
 
