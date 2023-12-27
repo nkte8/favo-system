@@ -1,9 +1,7 @@
 .register_user {
     display:block;
 }
-.register_box {
-    display: flex;
-}
+
 .register_user button.submit {
     appearance: button;
     border: none;
@@ -30,7 +28,8 @@
 .register_user input.textbox {
     font-family: Meiryo, "Hiragino Sans", "Noto Sans", sans-serif;
     border-radius: 20px;
-    padding: 0% 3%;
+    padding: 0% 10px;
+    margin-right: 5px;
 }
 
 .register_user label {

@@ -5,7 +5,7 @@ import './main.css';
 interface Props {
     localstorage_id_key: string
 }
-export default function Favobutton({localstorage_id_key}:Props) {
+export default function RegisterUserBox({localstorage_id_key}:Props) {
     
     // 初期値の設定
     var load_user_name = ""
@@ -19,18 +19,17 @@ export default function Favobutton({localstorage_id_key}:Props) {
     const [active_text, setText] = useState(load_user_name);
 
     const onClickAddText = () => {
-        if (active_text.length < 3 || active_text.length > 20) {
-            window.alert("名前は3文字以上、20文字以下で指定してください。");
-        } else {
+        if (active_text.length >= 3 && active_text.length <= 10) {
             localStorage.setItem(localstorage_id_key, active_text);
         }
     }
 
     return (
         <form className="register_user">
-            <label>ユーザ登録/ログイン（表示名）</label>
+            <label>ユーザ登録（半角英数字10字以内）</label>
             <div className="register_box">
                 <input
+                    pattern="^([a-zA-Z0-9]{3,10})$"
                     className='textbox'
                     value={active_text}
                     onChange={(event) => setText(event.target.value)}
