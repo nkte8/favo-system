@@ -3,7 +3,7 @@ import React from 'react';
 interface Props {
     localstorage_id_key: string
 }
-export default function Favobutton({localstorage_id_key}:Props) {
+export default function Userlabel({localstorage_id_key}:Props) {
     
     // 初期値の設定
     var load_user_name = ""

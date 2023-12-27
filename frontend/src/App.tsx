@@ -2,7 +2,7 @@ import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import Favobutton from './components/favobutton/main'
-import Dropbutton from './components/dropbutton/main'
+import Favolabel from './components/favolabel/main'
 import Registeruser from './components/registeruser/main'
 import Userlabel from './components/userlabel/main'
 
@@ -16,7 +16,7 @@ function App() {
 				<div>Welcome <Userlabel localstorage_id_key={localstrage_label}/></div>
 				<Registeruser localstorage_id_key={localstrage_label}/>
 				<Favobutton api_url={api_url} page_name={page_name} localstorage_id_key={localstrage_label} />
-				<Dropbutton api_url={api_url} />
+				<Favolabel api_url={api_url} localstorage_id_key={localstrage_label} />
 			</header>
 		</div>
 	);
