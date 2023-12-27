@@ -2,20 +2,18 @@ import React, { useState, useEffect } from 'react';
 
 import './main.css';
 
-const key_name_user_name = "user_name"
-
 interface Props {
     api_url: string;
     page_name: string;
-    // user_name: string | null;
+    localstorage_id_key: string;
 }
 
-export default function Favobutton({ api_url, page_name }: Props) {
+export default function Favobutton({ api_url, page_name, localstorage_id_key }: Props) {
 
     // user情報をlocalstorageから取得
     var user_name: string | null = null
     if (typeof localStorage !== "undefined"){
-        const value = localStorage.getItem(key_name_user_name);
+        const value = localStorage.getItem(localstorage_id_key);
         if (value !== null) {
             user_name = value
         }

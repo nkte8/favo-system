@@ -1,17 +1,14 @@
 import React from 'react';
 
-// import './main.css';
-
-const key_name_user_name = "user_name"
-
-// interface Props {
-// }
-export default function Favobutton() {
+interface Props {
+    localstorage_id_key: string
+}
+export default function Favobutton({localstorage_id_key}:Props) {
     
     // 初期値の設定
     var load_user_name = ""
     if (typeof localStorage !== "undefined"){
-        const value = localStorage.getItem(key_name_user_name);
+        const value = localStorage.getItem(localstorage_id_key);
         if (value !== null) {
             load_user_name = value
         }
