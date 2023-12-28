@@ -4,8 +4,14 @@ from api import favo_api
 favo_table = "favodb"
 user_table = "userdb"
 
-page_api = favo_api(favo_table, rcode_data_name="favcount")
-user_api = favo_api(user_table, rcode_data_name="favcount")
+# endpoint_url="http://localhost:4566"
+
+page_api = favo_api(favo_table, 
+                    rcode_key_name="favcount")
+
+user_api = favo_api(user_table, 
+                    auth_key_name="secret",
+                    rcode_key_name="favcount")
 
 def handler(event, context):
     result = {
@@ -21,28 +27,29 @@ def handler(event, context):
 
     arg = body.get('arg',None)
     user_id = body.get('user',None)
+    user_pw = body.get('secret',None)
     page_id = body.get('id',None)
 
-    if user_id != None:
+    if user_id != None:        
         match arg:
             case "read":
-                result = user_api.page_fav_read(user_id)
+                result = user_api.db_fav_read(
+                    user_id,auth_key_secret=user_pw)
             case "push":
-                result = user_api.page_fav_push(user_id)
-            case "pop":
-                pass
-                # result = user_api.page_fav_pop(user_id)
+                result = user_api.db_fav_push(
+                    user_id,auth_key_secret=user_pw)
+            case "register":
+                result = user_api.db_id_register(
+                    user_id,auth_key_secret=user_pw)
             case default:
                 raise Exception("Invalid order")
 
     if page_id != None:
         match arg:
             case "read":
-                result = page_api.page_fav_read(page_id)
+                result = page_api.db_fav_read(page_id)
             case "push":
-                result = page_api.page_fav_push(page_id)
-            case "pop":
-                pass
+                result = page_api.db_fav_push(page_id)
             case default:
                 raise Exception("Invalid order")
 
@@ -56,7 +63,7 @@ if __name__ == "__main__":
             }
         },
         "body": json.dumps({
-            "arg": "read",
+            "arg": "push",
             "id": "hoge",
         })
     }, None)
