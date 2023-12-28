@@ -3,7 +3,7 @@
 # need to override
 aws_access_key_id = "access_key at override.tfvars"
 aws_secret_access_key = "access_secret at override.tfvars"
-aws_region = "us-east-1"
+aws_region = "ap-northeast-1"
 
 # # api.tf
 # apigateway_favo_counter_name = "favo-system"
