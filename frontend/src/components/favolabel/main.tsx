@@ -9,7 +9,7 @@ interface Props {
 export default function Favolabel({ api_url }: Props) {
     const auth = get_auth_local()
 
-    const [count, setCount] = useState<number | null>(null);
+    const [label, setLabel] = useState("now loading...")
     useEffect(() => {
         setCountFromApi()
     }, [])
@@ -18,16 +18,16 @@ export default function Favolabel({ api_url }: Props) {
         try { 
             let c = await favo_api(api_url, null, auth.id, auth.secret, "read")
             if (c.favcount !== null) {
-                setCount(c.favcount)
+                setLabel(`${auth.id}さんは${c.favcount}回いいねしました。ありがとう！`)
             }    
         } catch (e) {
-            setCount(null)
+            setLabel("ログイン中の場合、ここに情報が表示されます。")
         }
     }
 
     return (
         <span>
-            {count}
+            {label}
         </span>
     );
 };
