@@ -12,20 +12,23 @@ class favo_api(base_api):
 
     # cors_domains = 'https://unnamedworks.com'
 
-    def __init__(self, table_name, rcode_key_name,
+    def __init__(self, table_name, favo_key_name,
+                    rcode_key_name = "rc",
                     auth_key_name = None,
                     endpoint_url = None) -> None:
         super().__init__(table_name=table_name, 
                          index_key_name=self.db_key_name, 
                          endpoint_url=endpoint_url)
+        self.favo_key_name = favo_key_name
         self.rcode_key_name = rcode_key_name
         self.auth_key_name = auth_key_name
 
     def __r_json(self, s_code, favo_value):
         return {
+            'statusCode': s_code,
             'body': {
-                'statusCode': s_code,
-                self.rcode_key_name: favo_value,
+                self.rcode_key_name: s_code,
+                self.favo_key_name: favo_value,
             },
             'isBase64Encoded': False
             # 'headers': {
