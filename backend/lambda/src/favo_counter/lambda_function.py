@@ -7,11 +7,11 @@ user_table = "userdb"
 # endpoint_url="http://localhost:4566"
 
 page_api = favo_api(favo_table,
-                    rcode_key_name="favcount")
+                    favo_key_name="favcount")
 
 user_api = favo_api(user_table,
                     auth_key_name="secret",
-                    rcode_key_name="favcount")
+                    favo_key_name="favcount")
 
 def handler(event, context):
     result = {
