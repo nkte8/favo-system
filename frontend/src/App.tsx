@@ -7,7 +7,7 @@ import UserForm from './components/userform/main'
 import Favobutton from './components/favobutton/main'
 import Favolabel from './components/favolabel/main'
 
-const api_url = "http://ujz4r4qyl12ptys7xniv42fbyhqvkuvj.lambda-url.ap-northeast-1.localhost.localstack.cloud:4566/"
+const api_url = "http://o23gmw2qx8e5vxz23wgk7m9u79173h18.lambda-url.ap-northeast-1.localhost.localstack.cloud:4566/"
 const page_name = "hoge"
 
 function App() {
