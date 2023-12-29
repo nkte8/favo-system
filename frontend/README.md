@@ -24,3 +24,4 @@ npm run start
 
 https://typescriptbook.jp/tutorials/react-like-button-tutorial  
 https://elsammit-beginnerblg.hatenablog.com/entry/2021/02/11/221720  
+https://qiita.com/task-k/items/6286a2d9437cf6e182f0  
