@@ -35,9 +35,9 @@ tflocal init -reconfigure
 
 - initの実施
 ```sh
-alias terraform="docker run --rm -v \${PWD}/env:/env -v \${PWD}/terraform:/app -v \${PWD}/lambda:/app/lambda -w /app -u \$(id -u):\$(id -g) -it hashicorp/terraform:1.6.5"
+alias terraform="docker run --rm -e AWS_ACCESS_KEY_ID=\${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=\${AWS_SECRET_ACCESS_KEY} -v \${PWD}/env:/env -v \${PWD}/terraform:/app -v \${PWD}/lambda:/app/lambda -w /app -u \$(id -u):\$(id -g) -it hashicorp/terraform:1.6.5"
 alias terraform >> $HOME/.bashrc
-terraform init -reconfigure -backend-config=/env/env.tfbackend
+terraform init -reconfigure
 ```
 
 `-var-file`を用いて本番環境向けの設定の読み込みを行う
