@@ -14,7 +14,7 @@ frontend/build
 
 #### backend
 .terraform
-.tfstate
+*.tfstate
 backend/terraform/*.zip
 backend/env/*
 !backend/env/.gitkeep
