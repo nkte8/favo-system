@@ -1,5 +1,6 @@
 from base_api import base_api
- 
+import random, string
+
 # data structure of dynamodb
 # {
 #     key: { page_name }
@@ -14,21 +15,24 @@ class favo_api(base_api):
 
     def __init__(self, table_name, favo_key_name,
                     rcode_key_name = "rc",
+                    rmsg_key_name = "msg",
                     auth_key_name = None,
                     endpoint_url = None) -> None:
         super().__init__(table_name=table_name, 
                          index_key_name=self.db_key_name, 
                          endpoint_url=endpoint_url)
         self.favo_key_name = favo_key_name
+        self.rmsg_key_name = rmsg_key_name
         self.rcode_key_name = rcode_key_name
         self.auth_key_name = auth_key_name
 
-    def __r_json(self, s_code, favo_value):
+    def __r_json(self, s_code, favo_value, rmsg_value = None):
         return {
             'statusCode': s_code,
             'body': {
                 self.rcode_key_name: s_code,
                 self.favo_key_name: favo_value,
+                self.rmsg_key_name: rmsg_value,
             },
             'isBase64Encoded': False
             # 'headers': {
@@ -37,9 +41,12 @@ class favo_api(base_api):
             #     'Access-Control-Allow-Methods': 'GET'
             # },
         }
-
-    def db_id_register(self, identify_value,
-                            auth_key_secret):
+    
+    def __randomname(self, n):
+        randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
+        return ''.join(randlst)
+    
+    def db_id_register(self, identify_value):
         # register出来ない初期化が行われている
         if self.auth_key_name == None:
             return self.__r_json(abs(500),None)
@@ -51,6 +58,9 @@ class favo_api(base_api):
         db_data_init_value = 0
 
         ## 初期化
+        ## secretはセキュリティ的観点でサーバ側で生成する
+        auth_key_secret = self.__randomname(20)
+
         data_body = {
             self.db_data_name: db_data_init_value,
             self.auth_key_name: auth_key_secret
@@ -61,7 +71,7 @@ class favo_api(base_api):
             data_body=data_body
         )
 
-        return self.__r_json(abs(r_val),db_data_init_value)
+        return self.__r_json(abs(r_val),db_data_init_value, auth_key_secret)
 
     def db_id_auth(self, identify_value, auth_key_secret):
         if self.auth_key_name != None:
