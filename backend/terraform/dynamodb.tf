@@ -21,10 +21,6 @@ resource "aws_dynamodb_table" "favo_dynamodb" {
   tags = {
     Name        = var.dynamodb_favodb_name
   }
-  
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "aws_dynamodb_table" "user_dynamodb" {
@@ -41,9 +37,5 @@ resource "aws_dynamodb_table" "user_dynamodb" {
 
   tags = {
     Name        = var.dynamodb_userdb_name
-  }
-
-  lifecycle {
-    prevent_destroy = true
   }
 }

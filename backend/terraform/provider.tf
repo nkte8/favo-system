@@ -1,12 +1,8 @@
 # provider.tf
-variable "aws_access_key_id" {}
-variable "aws_secret_access_key" {}
 variable "aws_region" {}
 
 provider "aws" {
 	region     = var.aws_region
-	access_key = var.aws_access_key_id
-	secret_key = var.aws_secret_access_key
 }
 
 terraform {
@@ -16,7 +12,13 @@ terraform {
 			version = "~> 5.0"
 		}
 	}
-	backend "local" {
-		path = ".tfstate/tflocal.tfstate"
+	backend "s3" {
+		bucket  = "favo-system"
+		region  = "ap-northeast-1"
+		key     = "terraform.tfstate"
+		encrypt = true
 	}
+	# backend "local" {
+	# 	path = "tflocal.tfstate"
+	# }
 }
