@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './main.css';
-import { favo_api, set_auth_local } from '@/utils/favoapi'
+import { favo_api, get_auth_local, set_auth_local, rm_auth_local } from '@/utils/favoapi'
 
 interface Props {
     api_url: string,
@@ -9,8 +9,11 @@ interface Props {
 }
 export default function LoginUserBox({ api_url, arg }: Props) {
 
-    const [userid, setUserid] = useState("");
-    const [secret, setSecret] = useState("");
+    const localstorage_val =  get_auth_local()
+    const [userid, setUserid] = useState(localstorage_val.id);
+    const [secret, setSecret] = useState(localstorage_val.secret);
+    const [islogin, setLoginStatus] = useState(false);
+
     const [msg, setMsg] = useState<string | null>(null);
 
     const form_msg = arg == "auth" ? "ログイン" : "ユーザ登録"
@@ -45,6 +48,29 @@ export default function LoginUserBox({ api_url, arg }: Props) {
             setMsg("IDは4~10文字/PWは5~20文字の半角英数で指定してください")
         }
     }
+    const onClickLogout = async () => {
+        rm_auth_local();
+        window.location.reload();
+    }
+
+    const checkUserByApi = async () => {
+        if (userid !== null && secret !== null){
+            try {
+                let r = await favo_api(api_url, null, userid, secret, "auth")
+                if (r.statusCode == 200){
+                    setLoginStatus(true)
+                } else {
+                    rm_auth_local()
+                }
+            } catch (e) {
+                rm_auth_local()
+            } 
+        }
+    }
+
+    useEffect(() => {
+        checkUserByApi()
+    }, [])
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.nativeEvent.isComposing || e.key !== 'Enter') return
@@ -53,45 +79,63 @@ export default function LoginUserBox({ api_url, arg }: Props) {
 
     return (
         <div className="user_form">
-            <div className="context">
-                {form_msg}
-            </div>
-            {msg !== null &&
-                <div className='context alert'>
-                    {msg}
-                </div>
-            }
-            <div>
-                <label>ID:</label><input
-                    type='text'
-                    className='textbox'
-                    pattern={userid_pattern}
-                    value={userid}
-                    onKeyDown={handleKeyDown}
-                    onChange={(event) => setUserid(event.target.value)}
-                />
-            </div>
-            <div>
-                <label>PW:</label><input
-                    type='password'
-                    className='textbox'
-                    pattern={secret_pattern}
-                    value={secret}
-                    onKeyDown={handleKeyDown}
-                    onChange={(event) => setSecret(event.target.value)}
-                />
-            </div>
             {
-                arg == "register" &&
-                <div className="context">
-                    IDは4~10文字/PWは5~20文字の半角英数が使えます。
-                </div>
+                islogin !== true &&
+                <React.StrictMode>
+                    <div className="context">
+                        {form_msg}
+                    </div>
+                    {msg !== null &&
+                        <span className='context alert'>
+                            {msg}
+                        </span>
+                    }
+                    <div>
+                        <label>ID:</label><input
+                            type='text'
+                            className='textbox'
+                            pattern={userid_pattern}
+                            value={userid}
+                            onKeyDown={handleKeyDown}
+                            onChange={(event) => setUserid(event.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label>PW:</label><input
+                            type='password'
+                            className='textbox'
+                            pattern={secret_pattern}
+                            value={secret}
+                            onKeyDown={handleKeyDown}
+                            onChange={(event) => setSecret(event.target.value)}
+                        />
+                    </div>
+                    {
+                        arg == "register" &&
+                        <div className="context">
+                            IDは4~10文字/PWは5~20文字の半角英数が使えます。
+                        </div>
+                    }
+                    <div>
+                        <button className='submit' onClick={onClickLogin}>
+                            {button_msg}
+                        </button>
+                    </div>
+                </React.StrictMode>
             }
-            <div>
-                <button className='submit' onClick={onClickLogin}>
-                    {button_msg}
-                </button>
-            </div>
+            {
+                islogin === true &&
+                <React.StrictMode>
+                    <div className="context">
+                        {userid}はログイン中です。
+                    </div>
+                    <div>
+                        <button className='submit' onClick={onClickLogout}>
+                            Logout
+                        </button>
+                    </div>
+                </React.StrictMode>
+            }
         </div>
     );
 };
