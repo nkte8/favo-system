@@ -39,8 +39,7 @@ def handler(event, context):
                 result = user_api.db_fav_push(
                     user_id,auth_key_secret=user_pw)
             case "register":
-                result = user_api.db_id_register(
-                    user_id,auth_key_secret=user_pw)
+                result = user_api.db_id_register(user_id)
             case "auth":
                 result = user_api.db_id_auth(
                     user_id,auth_key_secret=user_pw)
