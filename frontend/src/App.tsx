@@ -1,22 +1,27 @@
 import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
+
+import Userlabel from './components/userlabel/main'
+import UserForm from './components/userform/main'
 import Favobutton from './components/favobutton/main'
 import Favolabel from './components/favolabel/main'
-import Registeruser from './components/registeruser/main'
-import Userlabel from './components/userlabel/main'
 
-const api_url = "http://lsgh7xzkuz2dqul69u7lcr6hcgdtij9b.lambda-url.us-east-1.localhost.localstack.cloud:4566/"
+const api_url = "http://ujz4r4qyl12ptys7xniv42fbyhqvkuvj.lambda-url.ap-northeast-1.localhost.localstack.cloud:4566/"
 const page_name = "hoge"
-const localstrage_label = "user_name"
+
 function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<div>Welcome <Userlabel localstorage_id_key={localstrage_label}/></div>
-				<Registeruser localstorage_id_key={localstrage_label}/>
-				<Favobutton api_url={api_url} page_name={page_name} localstorage_id_key={localstrage_label} />
-				<Favolabel api_url={api_url} localstorage_id_key={localstrage_label} />
+				<div>Welcome&nbsp;
+					<Userlabel api_url={api_url} /></div>
+				<UserForm api_url={api_url} arg='auth' />
+				<UserForm api_url={api_url} arg='register' />
+				<Favobutton
+					api_url={api_url} page_name={page_name} />
+				<Favolabel
+					api_url={api_url} />
 			</header>
 		</div>
 	);
