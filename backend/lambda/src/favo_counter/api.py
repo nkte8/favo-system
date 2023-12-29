@@ -60,6 +60,13 @@ class favo_api(base_api):
 
         return self.__r_json(abs(r_val),db_data_init_value)
 
+    def db_id_auth(self, identify_value, auth_key_secret):
+        if self.auth_key_name != None:
+            auth_result = self.__db_id_auth(
+                    identify_value,auth_key_secret)
+            return self.__r_json(abs(auth_result),None)
+        else:
+            return self.__r_json(abs(-405),None)
 
     def __db_id_auth(self, index_value, auth_key_secret):
         if auth_key_secret != None:

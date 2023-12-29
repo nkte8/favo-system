@@ -6,10 +6,10 @@ user_table = "userdb"
 
 # endpoint_url="http://localhost:4566"
 
-page_api = favo_api(favo_table, 
+page_api = favo_api(favo_table,
                     rcode_key_name="favcount")
 
-user_api = favo_api(user_table, 
+user_api = favo_api(user_table,
                     auth_key_name="secret",
                     rcode_key_name="favcount")
 
@@ -40,6 +40,9 @@ def handler(event, context):
                     user_id,auth_key_secret=user_pw)
             case "register":
                 result = user_api.db_id_register(
+                    user_id,auth_key_secret=user_pw)
+            case "auth":
+                result = user_api.db_id_auth(
                     user_id,auth_key_secret=user_pw)
             case default:
                 raise Exception("Invalid order")
