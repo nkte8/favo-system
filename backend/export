@@ -1,6 +1,6 @@
 #!/bin/bash
 
-envfile="./env/.env"
+envfile="./.env"
 for env in $(cat ${envfile} | grep -v -e '^#')
 do
   export $env

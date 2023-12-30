@@ -21,7 +21,7 @@ lambda_favo_counter_payload_src = "lambda/src/favo_counter/"
 lambda_favo_counter_name = "favo_counter"
 lambda_favo_counter_handler = "lambda_function.handler"
 
-lambda_favo_counter_function_url_cors_origin = ["*"]
+lambda_favo_counter_function_url_cors_origin = ["https://unnamedworks.com", "https://develop.unnamedworks.pages.dev",]
 
 # lambda_ufav_counter_payload_name = "lambda_ufav_counter_payload.zip"
 # lambda_ufav_counter_payload_src = "lambda/src/ufav_counter/"
