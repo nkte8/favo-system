@@ -3,10 +3,6 @@ README.md
 
 詳しくは[lambda/README/md](lambda/README.md)を参照 
 
-```sh
-docker run --rm -it --env-file $PWD/env/.env -v $PWD/lambda:/src -w /src --entrypoint /bin/bash public.ecr.aws/lambda/python:3.11
-```
-
 # インフラ関連
 
 ## localstackの実行方法
@@ -15,34 +11,67 @@ docker run --rm -it --env-file $PWD/env/.env -v $PWD/lambda:/src -w /src --entry
 
 Localstackの起動  
 ```sh
-docker compose -f ./localstack/docker-compose.yml up
+# 起動
+docker compose -f ./localstack/docker-compose.yml up -d
+# ログをstdoutに出力
+docker compose -f ./localstack/docker-compose.yml logs -f
 ```
 
 ## terraform(develop)の実行方法
 
 詳しくは[tflocal/README/md](tflocal/README.md)を参照  
 
-tflocal実行
+provider.tfにて、backendをlocalに変更
+```diff
+-	backend "s3" {
+-		bucket  = "favo-system"
+-		region  = "ap-northeast-1"
+-		key     = "terraform.tfstate"
+-		encrypt = true
+-	}
++	backend "local" {
++	 	path = "tflocal.tfstate"
++	}
+```
+
+`tflocal init`によりtfstateをlocal向けに初期化
 ```sh
 alias tflocal="docker run -v \${PWD}/terraform:/app -v \${PWD}/lambda:/app/lambda --rm --net=localstack_default -u \$(id -u):\$(id -g) -it tflocal:0.16.0" 
 alias tflocal >> $HOME/.bashrc
 tflocal init -reconfigure
 ```
 
+コマンド実行準備OK
+```sh
+tflocal plan
+```
+
 ## terraform(prod)の実行方法
 
-コンテナで実行する
+provider.tfにて、backendをs3に変更
+```diff
++	backend "s3" {
++		bucket  = "favo-system"
++		region  = "ap-northeast-1"
++		key     = "terraform.tfstate"
++		encrypt = true
++	}
+-	backend "local" {
+-	 	path = "tflocal.tfstate"
+-	}
+```
 
-- initの実施
+`terraform init`によりtfstateをlocal向けに初期化
 ```sh
+. export
 alias terraform="docker run --rm -e AWS_ACCESS_KEY_ID=\${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=\${AWS_SECRET_ACCESS_KEY} -v \${PWD}/env:/env -v \${PWD}/terraform:/app -v \${PWD}/lambda:/app/lambda -w /app -u \$(id -u):\$(id -g) -it hashicorp/terraform:1.6.5"
 alias terraform >> $HOME/.bashrc
 terraform init -reconfigure
 ```
 
-`-var-file`を用いて本番環境向けの設定の読み込みを行う
+コマンド実行準備OK
 ```sh
-terraform plan -var-file=/env/.env.tfvars
+terraform plan
 ```
 
 参考:  
