@@ -15,7 +15,7 @@ function App() {
 		<div className="App">
 			<header className="App-header">
 				<div>Welcome&nbsp;
-					<Userlabel api_url={api_url} /></div>
+					<Userlabel api_url={api_url} login_ref='/' /></div>
 				<UserForm api_url={api_url} arg='auth' login_path='/' />
 				<UserForm api_url={api_url} arg='register' login_path='/' />
 				<Favobutton

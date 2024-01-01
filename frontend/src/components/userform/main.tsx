@@ -87,7 +87,7 @@ export default function LoginUserBox({ api_url, arg , login_path }: Props) {
     }
 
     return (
-        <div className="user_form">
+        <div className="userform">
             {
                 islogin !== true &&
                 <div className="context">
