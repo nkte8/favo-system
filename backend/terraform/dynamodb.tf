@@ -17,6 +17,10 @@ resource "aws_dynamodb_table" "favo_dynamodb" {
     name = var.dynamodb_favodb_hash_key
     type = "S"
   }
+  point_in_time_recovery {
+    enabled = true
+  }
+  deletion_protection_enabled = true
 
   tags = {
     Name        = var.dynamodb_favodb_name
@@ -34,6 +38,10 @@ resource "aws_dynamodb_table" "user_dynamodb" {
     name = var.dynamodb_userdb_hash_key
     type = "S"
   }
+    point_in_time_recovery {
+    enabled = true
+  }
+  deletion_protection_enabled = true
 
   tags = {
     Name        = var.dynamodb_userdb_name
