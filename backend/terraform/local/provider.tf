@@ -12,13 +12,7 @@ terraform {
 			version = "~> 5.0"
 		}
 	}
-	backend "s3" {
-		bucket  = "favo-system"
-		region  = "ap-northeast-1"
-		key     = "terraform.tfstate"
-		encrypt = true
+	backend "local" {
+		path = "tflocal.tfstate"
 	}
-	# backend "local" {
-	# 	path = "tflocal.tfstate"
-	# }
 }
