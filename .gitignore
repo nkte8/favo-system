@@ -17,9 +17,7 @@ frontend/build
 *.tfstate.backup
 *.tfstate
 
-backend/terraform/*.zip
-backend/env/*
-!backend/env/.gitkeep
+backend/**/*.zip
 backend/**/*.whl
 backend/**/__pycache__
 
