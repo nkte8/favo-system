@@ -36,7 +36,7 @@ provider.tfにて、backendをlocalに変更
 
 `tflocal init`によりtfstateをlocal向けに初期化
 ```sh
-alias tflocal="docker run -v \${PWD}/terraform:/app -v \${PWD}/lambda:/app/lambda --rm --net=localstack_default -u \$(id -u):\$(id -g) -it tflocal:0.16.0" 
+alias tflocal="docker run -v \${PWD}/terraform:/app --rm --net=localstack_default -u \$(id -u):\$(id -g) -it tflocal:0.16.0" 
 alias tflocal >> $HOME/.bashrc
 tflocal init -reconfigure
 ```
@@ -64,7 +64,7 @@ provider.tfにて、backendをs3に変更
 `terraform init`によりtfstateをlocal向けに初期化
 ```sh
 . export
-alias terraform="docker run --rm -e AWS_ACCESS_KEY_ID=\${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=\${AWS_SECRET_ACCESS_KEY} -v \${PWD}/env:/env -v \${PWD}/terraform:/app -v \${PWD}/lambda:/app/lambda -w /app -u \$(id -u):\$(id -g) -it hashicorp/terraform:1.6.5"
+alias terraform="docker run --rm -e AWS_ACCESS_KEY_ID=\${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=\${AWS_SECRET_ACCESS_KEY} -v \${PWD}/env:/env -v \${PWD}/terraform:/app -w /app -u \$(id -u):\$(id -g) -it hashicorp/terraform:1.6.5"
 alias terraform >> $HOME/.bashrc
 terraform init -reconfigure
 ```

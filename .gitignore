@@ -20,8 +20,8 @@ frontend/build
 backend/terraform/*.zip
 backend/env/*
 !backend/env/.gitkeep
-backend/lambda/**/*.whl
-backend/lambda/**/__pycache__
+backend/**/*.whl
+backend/**/__pycache__
 
 # misc
 **/.DS_Store
