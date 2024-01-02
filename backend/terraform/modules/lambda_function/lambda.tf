@@ -1,21 +1,4 @@
 # lambda.tf
-
-variable "lambda_favo_counter_payload_name" {}
-variable "lambda_favo_counter_payload_src" {}
-variable "lambda_favo_counter_name" {}
-variable "lambda_favo_counter_handler" {}
-
-variable "lambda_favo_counter_function_url_cors_origin" {}
-
-# variable "lambda_ufav_counter_payload_name" {}
-# variable "lambda_ufav_counter_payload_src" {}
-# variable "lambda_ufav_counter_name" {}
-# variable "lambda_ufav_counter_handler" {}
-
-variable "lambda_layer_payload_name" {}
-variable "lambda_layer_payload_src" {}
-variable "lambda_layer_name" {}
-
 data "archive_file" "lambda_favo_counter_payload" {
   type        = "zip"
   source_dir = var.lambda_favo_counter_payload_src
@@ -25,7 +8,7 @@ data "archive_file" "lambda_favo_counter_payload" {
 resource "aws_lambda_function" "lambda_favo_counter_function" {
   filename      = var.lambda_favo_counter_payload_name
   function_name = var.lambda_favo_counter_name
-  role          = aws_iam_role.iam_for_lambda.arn
+  role          = aws_iam_role.iam_lambda.arn
   handler       = var.lambda_favo_counter_handler
 
   source_code_hash = data.archive_file.lambda_favo_counter_payload.output_base64sha256
