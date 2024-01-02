@@ -18,8 +18,8 @@ export default function LoginUserBox({ api_url, arg , login_path }: Props) {
 
     const [msg, setMsg] = useState<string | null>(null);
 
-    const form_msg = arg == "auth" ? "ログイン" : "ユーザ登録"
-    const button_msg = arg == "auth" ? "Login" : "Register"
+    const form_msg = arg === "auth" ? "ログイン" : "ユーザ登録"
+    const button_msg = arg === "auth" ? "Login" : "Register"
 
     const userid_pattern = "^([a-zA-Z0-9]{4,10})$"
     const secret_pattern = "^([a-zA-Z0-9]{20,20})$"
@@ -66,13 +66,14 @@ export default function LoginUserBox({ api_url, arg , login_path }: Props) {
         if (userid !== null && secret !== null) {
             try {
                 let r = await favo_api(api_url, null, userid, secret, "auth")
-                if (r.rc == 200) {
+                if (r.rc === 200) {
                     setLoginStatus(true)
-                } else {
+                } else { 
                     rm_auth_local()
+                    setMsg("再ログインをお願いします。");
                 }
             } catch (e) {
-                rm_auth_local()
+                setMsg("不明なサーバーエラーが発生しました。");
             }
         }
     }
@@ -103,6 +104,9 @@ export default function LoginUserBox({ api_url, arg , login_path }: Props) {
                 <div className="context">
                     再ログインする場合は以下のパスワードをご利用ください。
                 </div>
+                <div className="context smaller">
+                    パスワードの再発行はできません。ブラウザへの保存をお願いします。
+                </div>
                 </React.StrictMode>
             }
             {
@@ -113,7 +117,7 @@ export default function LoginUserBox({ api_url, arg , login_path }: Props) {
                             {msg}
                         </span>
                     }
-                    <div>
+                    <div className='component'>
                         <label>ID:</label><input
                             type='text'
                             className='textbox'
@@ -126,8 +130,8 @@ export default function LoginUserBox({ api_url, arg , login_path }: Props) {
                 </React.StrictMode>
             }
             {
-                (arg === "auth" || islogin == true) &&
-                <div>
+                (arg === "auth" || islogin === true) &&
+                <div className='component'>
                     <label>PW:</label><input
                         type={isOpenpw}
                         className='textbox'
@@ -143,7 +147,7 @@ export default function LoginUserBox({ api_url, arg , login_path }: Props) {
             {
                 islogin !== true &&
                 <React.StrictMode>
-                    <div>
+                    <div className='component'>
                         <button className='submit' onClick={onClickLogin}>
                             {button_msg}
                         </button>
@@ -153,7 +157,7 @@ export default function LoginUserBox({ api_url, arg , login_path }: Props) {
             {
                 islogin === true &&
                 <React.StrictMode>
-                    <div>
+                    <div className='component'>
                         <button className='submit' onClick={onClickLogout}>
                             Logout
                         </button>
