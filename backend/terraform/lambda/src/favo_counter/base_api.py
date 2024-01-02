@@ -23,7 +23,7 @@ class base_api:
             print('E: Unexpected error')
             return -500
     
-    def table_index_exist(self, index_value, ):
+    def table_index_exist(self, index_value):
         try:
             exist_data = self.table.get_item(
                 Key={

@@ -101,10 +101,10 @@ class favo_api(base_api):
             if auth_result < 0:    
                 return self.__r_json(abs(auth_result),None)
 
-        value = self.table_read(
+        value = int(self.table_read(
             index_value=identify_value,
             request_data_key=self.db_data_name
-        )
+        ))
 
         if value >= 0:
             return self.__r_json(200,value)
@@ -125,10 +125,10 @@ class favo_api(base_api):
                 self.auth_key_name: auth_key_secret
             })
 
-        value = self.table_read(
+        value = int(self.table_read(
             index_value=identify_value,
             request_data_key=self.db_data_name
-        )
+        ))
         if value < 0:
             return self.__r_json(abs(value), None)
 

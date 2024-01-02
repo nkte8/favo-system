@@ -17,11 +17,9 @@ frontend/build
 *.tfstate.backup
 *.tfstate
 
-backend/terraform/*.zip
-backend/env/*
-!backend/env/.gitkeep
-backend/lambda/**/*.whl
-backend/lambda/**/__pycache__
+backend/**/*.zip
+backend/**/*.whl
+backend/**/__pycache__
 
 # misc
 **/.DS_Store
