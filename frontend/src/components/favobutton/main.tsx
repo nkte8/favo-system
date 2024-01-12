@@ -6,8 +6,9 @@ import { favo_api, get_auth_local } from '@/utils/favoapi'
 interface Props {
     api_url: string,
     page_name: string,
+    highlight_name?: string,
 }
-export default function Favobutton({ api_url, page_name }: Props) {
+export function Favobutton({ api_url, page_name, highlight_name }: Props) {
 
     const auth = get_auth_local()
 
@@ -16,7 +17,7 @@ export default function Favobutton({ api_url, page_name }: Props) {
 
     const runFavoApi = async (arg: "read" | "push") => {
         try {
-            let c = await favo_api(api_url, page_name, auth.id, auth.secret, arg)
+            let c = await favo_api(api_url, page_name, auth.id, auth.secret, arg, highlight_name)
             if (c.favcount !== null) {
                 setCount(c.favcount)
             }
@@ -27,7 +28,6 @@ export default function Favobutton({ api_url, page_name }: Props) {
     }
 
     useEffect(() => {
-        // 非同期処理の場合は、関数を定義しそれを呼び出すような形式で記述すること
         runFavoApi("read")
     }, [])
 

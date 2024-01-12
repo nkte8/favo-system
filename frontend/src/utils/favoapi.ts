@@ -11,6 +11,7 @@ export const favo_api = async (
     userid: string | null,
     secret: string | null,
     arg: "read" | "auth" | "register" | "push",
+    aid: string | null = null,
 ): Promise<ApiResponse> =>
     fetch(api_url, {
         method: 'POST',
@@ -18,6 +19,7 @@ export const favo_api = async (
         body: JSON.stringify(
             {
                 id: id,
+                aid: aid,
                 user: userid,
                 secret: secret,
                 arg: arg,
