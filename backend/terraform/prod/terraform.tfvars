@@ -15,7 +15,7 @@ dynamodb_props = {
             write_capacity = 5
             hash_key = "Identify"
 			import_s3_bucket = "favo-system"
-			import_s3_key_prefix = "AWSDynamoDB/01704264010692-bf533c21/data/"
+			import_s3_key_prefix = "AWSDynamoDB/01705053411232-c9dc933b/data/"
         },
 		userdb = {
 			name = "userdb"
@@ -23,7 +23,7 @@ dynamodb_props = {
 			write_capacity = 5
 			hash_key = "Identify"
 			import_s3_bucket = "favo-system"
-			import_s3_key_prefix = "AWSDynamoDB/01704264023314-39b2fc15/data/"	
+			import_s3_key_prefix = "AWSDynamoDB/01705053423468-e3278bcd/data/"	
 		},
     }
 

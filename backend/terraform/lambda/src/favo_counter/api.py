@@ -145,3 +145,4 @@ class favo_api(base_api):
             value -=1
 
         return self.__r_json(abs(r_val),value)
+        

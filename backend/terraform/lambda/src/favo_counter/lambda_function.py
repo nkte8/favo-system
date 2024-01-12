@@ -29,6 +29,7 @@ def handler(event, context):
     user_id = body.get('user',None)
     user_pw = body.get('secret',None)
     page_id = body.get('id',None)
+    append_id = body.get('aid',None)
 
     if user_id != None:        
         match arg:
@@ -45,6 +46,13 @@ def handler(event, context):
                     user_id,auth_key_secret=user_pw)
             case default:
                 raise Exception("Invalid order")
+
+    if append_id != None:
+        match arg:
+            case "push":
+                result = page_api.db_fav_push(append_id)
+            case default:
+                pass
 
     if page_id != None:
         match arg:
